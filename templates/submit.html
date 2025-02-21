@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #1e90ff, #87ceeb);
+            color: white;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        .container {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .weather-info {
+            font-size: 18px;
+            margin: 15px 0;
+        }
+        a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #ff4500;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #ff6347;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <div class="container">
+        <h2>Weather in <span id="city"></span></h2>
+        <p class="weather-info" id="weatherResult">Loading...</p>
+        <a href="/">Check another city</a>
+    </div>
+
+    <script>
+        async function fetchWeather() {
+            const params = new URLSearchParams(window.location.search);
+            const city = params.get("city");
+
+            if (!city) {
+                document.getElementById("weatherResult").textContent = "City not provided.";
+                return;
+            }
+
+            document.getElementById("city").textContent = city;
+
+            // Fetch weather data
+            let response = await fetch(`https://wttr.in/${city}?format=%C+%t`);
+            let data = await response.text();
+
+            document.getElementById("weatherResult").textContent = `Weather: ${data}`;
+        }
+
+        fetchWeather();
+    </script>
+</body>
+</html>
